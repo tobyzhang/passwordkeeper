@@ -1,11 +1,10 @@
 package main
 
 import (
-	_ "github.com/tobyzxj/passwordkeeper/passwordkeeper/routers"
 	"github.com/astaxie/beego"
+	_ "github.com/tobyzxj/passwordkeeper/routers"
 )
 
 func main() {
 	beego.Run()
 }
-
