@@ -1,0 +1,65 @@
+{{template "header"}}
+
+<body>
+
+    {{template "navbar" .}}
+
+    <div class="container" style="width: 500px;">
+        <form class="form-signin" role="form" method="POST" action="save">
+            <p> <h3><span class="label label-primary">User Account Modify</span></h3>
+                <span class="label label-warning">Username</span>
+                <input type="hidden" name="uid" value="{{.Uid}}">
+                <input id="uname" type="text" class="form-control" name="uname" placeholder="Username or email" value="{{.Username}}" required autofocus>
+                <span class="label label-warning">Email</span>
+                <input id="uemail" type="text" class="form-control" name="uemail" placeholder="Email" value="{{.Email}}" required>
+                <span class="label label-warning">Password</span>
+                <input id="upasswd" type="password" class="form-control" name="upasswd" placeholder="Password" value="{{.Password}}" disabled="disabled" required>
+            <span class="label label-danger">{{.ModifyStatus}}</span>
+            <label class="checkbox">
+                <input id="changeShow" type="checkbox" name="changeShow" onClick="return ChangeShow();"> Display character
+            </label>
+            <label class="checkbox">
+             <input id="doNotChangPasswd" type="checkbox" name="doNotChangPasswd" checked="checked" onClick="return DoNotChangPasswd();"> Do not change password
+             </label>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Modify</button><button class="btn btn-lg btn-primary btn-block" type="submit" onclick="return backToUserList();">Back List</button>
+            <script type="text/javascript">
+                function ChangeShow() {
+                    var upasswd = document.getElementById("upasswd");
+                    if (upasswd.type == "text") {
+                        upasswd.type = "password"
+                    }
+                    else
+                    {
+                        upasswd.type = "text"
+                    }
+
+                    return true;
+                }
+                function DoNotChangPasswd() {
+                    var upasswd = document.getElementById("upasswd");
+                    if (upasswd.disabled == true) {
+                        upasswd.disabled = false
+                    }
+                    else
+                    {
+                        upasswd.disabled = true
+                    }
+
+                    return true;
+                }
+                function backToUserList() {
+                        window.location.href = "/user";
+                        return false;
+                    }
+            </script>
+
+            </p>
+        </form>
+    </div>
+
+    {{template "tail"}}
+
+    </div>
+    
+</body>
+</html>

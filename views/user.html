@@ -1,0 +1,50 @@
+{{template "header"}}
+
+<body>
+
+    {{template "navbar" .}}
+
+    <div class="container">
+        <h3><span class="label label-primary">User List Dashboard</span></h3>
+        <form class="form-inline" method="GET" action="/user">
+            <div class="form-horizontal" style="width: 300px;">
+                <input id="uname" type="text" class="form-control" name="uname" placeholder="Enter a username" required autofocus><span class="label label-warning">{{.Uname}}</span>
+                <input id="uemail" type="email" class="form-control" name="uemail" placeholder="Enter a email" required><span class="label label-warning">{{.Uemail}}</span>
+                <input id="upasswd" type="password" class="form-control" name="upasswd" placeholder="Enter a password"><span class="label label-warning">{{.Succeed}}</span>
+                <input type="hidden" name="op" value="add" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 300px;">Add user</button>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Created</th>
+                    <th>Modifiled</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .User}}
+                <tr>
+                    <th>{{.Id}}</th>
+                    <th>{{.Name}}</th>
+                    <th>{{.Email}}</th>
+                    <th>{{.Passwd}}</th>
+                    <th>{{.Created}}</th>
+                    <th>{{.Modified}}</th>
+                    <th><span class="label label-danger"><a href="/user?op=delete&uid={{.Id}}">Delete</a></span><span class="label label-info"><a href="/user/modify?uid={{.Id}}">Modify</a></span></th>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+
+    {{template "tail"}}
+
+    </div>
+    
+</body>
+</html>

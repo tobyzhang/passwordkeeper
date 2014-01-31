@@ -2,17 +2,24 @@
 
 <body>
 
-    {{template "navbar"}}
+    {{template "navbar" .}}
 
     <div class="container" style="width: 500px;">
-        <form class="form-signin" role="form">
+        <form class="form-signin" role="form" method="POST" action="login">
             <p> <h3><span class="label label-primary">Please sign in</span></h3>
-                <input type="text" class="form-control" placeholder="Username or email" required autofocus>
-                <input type="password" class="form-control" placeholder="Password" required>
+                <input type="text" class="form-control" name="uname" placeholder="Username or email" required autofocus>
+                <input type="password" class="form-control" name="passwd" placeholder="Password" required>
             <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
+                <input type="checkbox" value="remember-me" name="autoLogin"> Remember me
             </label>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <span class="label label-warning">{{.LoginStatus}}</span>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button><button class="btn btn-lg btn-primary btn-block" type="submit" onclick="return backToHome();">Back Home</button>
+                <script type="text/javascript">
+                    function backToHome() {
+                        window.location.href = "/";
+                        return false;
+                    }
+                </script>
             </p>
         </form>
     </div>
