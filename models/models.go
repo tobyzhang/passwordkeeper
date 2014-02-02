@@ -47,7 +47,7 @@ type Passwdtag struct {
 	Account  string
 	Passwd   string
 	Url      string    `orm:"index"`
-	Remark   string    `orm:"index"`
+	Remark   string    `orm:"size(5000)"`
 	Created  time.Time `orm:"index"`
 	Modified time.Time
 }
@@ -276,4 +276,33 @@ func GetPasswdtagByUid(uid string) ([]*Passwdtag, error) {
 	qs := o.QueryTable("passwdtag")
 	_, err = qs.Filter("Uid", id).All(&passwdtags)
 	return passwdtags, err
+}
+
+// 添加一个密码标签
+func AddPasswdTag(uid, passwdtag, account, password, url, remark string) string {
+	id, err := strconv.ParseInt(uid, 10, 64)
+	if err != nil {
+		return "ERR_CONV"
+	}
+
+	o := orm.NewOrm()
+
+	// 添加新密码标签
+	tag := &Passwdtag{
+		Uid:      id,
+		Tag:      passwdtag,
+		Account:  account,
+		Passwd:   password,
+		Url:      url,
+		Remark:   remark,
+		Created:  time.Now(),
+		Modified: time.Now(),
+	}
+
+	_, err = o.Insert(tag)
+	if err != nil {
+		return "ERR_ORM"
+	}
+
+	return "ERR_OK"
 }
