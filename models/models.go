@@ -255,9 +255,21 @@ func GetUserByName(uname string) (User, error) {
 	var user User
 
 	o := orm.NewOrm()
+
+	// A.帐号可能是用户名
 	qs := o.QueryTable("user")
 	err := qs.Filter("name", uname).One(&user)
+	if err == nil {
+		return user, nil
+	}
 
+	// B.帐号可能是
+	err = qs.Filter("email", uname).One(&user)
+	if err == nil {
+		return user, nil
+	}
+
+	// not find
 	return user, err
 }
 
