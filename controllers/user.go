@@ -60,7 +60,7 @@ func (this *UserController) Get() {
 			break
 		}
 
-		err := models.DeleteUser(uid)
+		err := models.DeleteUserByUid(uid)
 		if err != nil {
 			beego.Error(err)
 		}
@@ -119,7 +119,7 @@ func (this *UserController) Modify() {
 	}
 
 	// 根据uid得到当前的用户帐号信息
-	user, err := models.GetUser(uid)
+	user, err := models.GetUserByUid(uid)
 	if err != nil {
 		beego.Error(err)
 		this.Redirect("/user", 302)
@@ -159,6 +159,23 @@ func (this *UserController) Modify() {
 
 // 用户帐号修改保存
 func (this *UserController) Save() {
+	// 判断用户是否有权限进入此页面
+	if checkLogin(this.Ctx) {
+		ck, err := this.Ctx.Request.Cookie("uname")
+		if err != nil {
+			this.Redirect("/login", 302)
+			return
+		}
+
+		uname := ck.Value
+		if uname != "root" && uname != "admin" {
+			this.Redirect("/passwdtag", 302)
+			return
+		}
+	} else {
+		this.Redirect("/login", 302)
+	}
+
 	// 解析表单
 	var err string
 	this.TplNames = "user_modify.html"

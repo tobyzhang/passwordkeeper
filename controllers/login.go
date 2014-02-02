@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/tobyzxj/passwordkeeper/models"
@@ -120,4 +122,36 @@ func getLoginUserName(ctx *context.Context) (string, bool) {
 	passwd := ck.Value
 
 	return uname, models.CheckAccount(uname, passwd)
+}
+
+// 获取当前登入用户的uid
+func getLoginUserId(ctx *context.Context) (string, bool) {
+	// 请求用户本地Cookie用户名密码值
+	ck, err := ctx.Request.Cookie("uname")
+	if err != nil {
+		return "", false
+	}
+	uname := ck.Value
+
+	ck, err = ctx.Request.Cookie("passwd")
+	if err != nil {
+		return "", false
+	}
+	passwd := ck.Value
+
+	// 如果是有效的登入用户才进行获取
+	if models.CheckAccount(uname, passwd) {
+		// 数据库查询
+		user, err := models.GetUserByName(uname)
+		if err != nil {
+			beego.Error(err)
+
+			return "", false
+		} else {
+			uid := fmt.Sprintf("%d", user.Id)
+			return uid, true
+		}
+	} else {
+		return "", false
+	}
 }

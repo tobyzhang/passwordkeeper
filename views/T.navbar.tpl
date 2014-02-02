@@ -4,7 +4,7 @@
         <a class="navbar-brand pull-left" href="/">PasswordKeeper</a>
         <ul class="nav navbar-nav pull-right">
             {{if .IsLogin}}
-            <li class="active"><a href="/{{.UserUrl}}">{{.UserName}}</a></li>
+            <li class="active"><a href="/{{.UserUrl}}"><i class="glyphicon glyphicon-user"></i> {{.UserName}}</a></li>
             {{end}}
             <li {{if .IsAbout}}class="active"{{end}}><a href="/">About</a></li>
             {{if .IsLogin}}

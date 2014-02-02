@@ -23,7 +23,7 @@
                     <th>Email</th>
                     <th>Password</th>
                     <th>Created</th>
-                    <th>Modifiled</th>
+                    <th>Operate</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +34,6 @@
                     <th>{{.Email}}</th>
                     <th>{{.Passwd}}</th>
                     <th>{{.Created}}</th>
-                    <th>{{.Modified}}</th>
                     <th><span class="label label-danger"><a href="/user?op=delete&uid={{.Id}}">Delete</a></span><span class="label label-info"><a href="/user/modify?uid={{.Id}}">Modify</a></span></th>
                 </tr>
                 {{end}}

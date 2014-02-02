@@ -32,15 +32,24 @@ type User struct {
 	Modified time.Time
 }
 
+// 用户操作记录
+type UserOpRecord struct {
+	Id         int64
+	Uid        int64
+	LoginTimes int64
+}
+
 // 密码标签
 type Passwdtag struct {
-	Id      int64
-	Uid     int64
-	Tag     string `orm:"index"`
-	Account string
-	Passwd  string
-	Url     string `orm:"index"`
-	Remark  string `orm:"index"`
+	Id       int64
+	Uid      int64
+	Tag      string `orm:"index"`
+	Account  string
+	Passwd   string
+	Url      string    `orm:"index"`
+	Remark   string    `orm:"index"`
+	Created  time.Time `orm:"index"`
+	Modified time.Time
 }
 
 func RegisterDB() {
@@ -51,7 +60,7 @@ func RegisterDB() {
 	}
 
 	// 注册驱动模型
-	orm.RegisterModel(new(User), new(Passwdtag))
+	orm.RegisterModel(new(User), new(UserOpRecord), new(Passwdtag))
 	// 注册驱动（“sqlite3” 属于默认注册，此处代码可省略）
 	orm.RegisterDriver(SQLITE3_DRIVER, orm.DR_Sqlite)
 	// 注册默认数据库
@@ -214,7 +223,7 @@ func GetUserList() ([]*User, error) {
 }
 
 // 删除用户
-func DeleteUser(uid string) error {
+func DeleteUserByUid(uid string) error {
 	id, err := strconv.ParseInt(uid, 10, 64)
 	if err != nil {
 		return err
@@ -227,7 +236,7 @@ func DeleteUser(uid string) error {
 }
 
 // 根据uid获取用户信息
-func GetUser(uid string) (User, error) {
+func GetUserByUid(uid string) (User, error) {
 	var user User
 
 	id, err := strconv.ParseInt(uid, 10, 64)
@@ -239,4 +248,32 @@ func GetUser(uid string) (User, error) {
 	user.Id = id
 	err = o.Read(&user)
 	return user, err
+}
+
+// 根据用户名查询用户信息
+func GetUserByName(uname string) (User, error) {
+	var user User
+
+	o := orm.NewOrm()
+	qs := o.QueryTable("user")
+	err := qs.Filter("name", uname).One(&user)
+
+	return user, err
+}
+
+// 根据用户名查找该用户的所有密码标签
+func GetPasswdtagByUid(uid string) ([]*Passwdtag, error) {
+	var passwdtag Passwdtag
+	passwdtags := make([]*Passwdtag, 0)
+
+	id, err := strconv.ParseInt(uid, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	o := orm.NewOrm()
+	passwdtag.Uid = id
+	qs := o.QueryTable("passwdtag")
+	_, err = qs.Filter("Uid", id).All(&passwdtags)
+	return passwdtags, err
 }

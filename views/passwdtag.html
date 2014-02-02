@@ -1,0 +1,43 @@
+{{template "header"}}
+
+<body>
+
+    {{template "navbar" .}}
+
+    <div class="container">
+        <h3><span class="label label-primary">Password Tag List Dashboard</span></h3>
+        <div class="container" align="right">
+            <a type="submit" class="btn btn-primary" href="/passwdtag/add">Create A New Password Tag</a>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tag</th>
+                    <th>Account</th>
+                    <th>Password</th>
+                    <th>Created</th>
+                    <th>Operate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Passwdtag}}
+                <tr>
+                    <th>{{.Id}}</th>
+                    <th><a href="/passwdtag/view?tid={{.Id}}">{{.Tag}}</a></th>
+                    <th>{{.Account}}</th>
+                    <th>{{.Passwd}}</th>
+                    <th>{{.Created}}</th>
+                    <th><span class="label label-danger"><a href="/passwdtag?op=delete&tid={{.Id}}">Delete</a></span><span class="label label-info"><a href="/passwdtag/modify?tid={{.Id}}">Modify</a></span></th>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+
+    {{template "tail"}}
+
+    </div>
+    
+</body>
+</html>

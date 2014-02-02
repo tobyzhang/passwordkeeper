@@ -11,5 +11,6 @@
     <!-- Custom styles for this template -->
     <link href="/static/css/special/navbar-fixed-top.css" rel="stylesheet">
     <link href="/static/css/special/signin.css" rel="stylesheet">
+    <link href="/static/css/special/modal-toby.css" rel="stylesheet">
 </head>
 {{end}}
