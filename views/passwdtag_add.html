@@ -5,12 +5,12 @@
     {{template "navbar" .}}
 
     <div class="container" style="width: 1000px;">
-        <h3><span class="label label-primary">Add Password Tag</span></h3>
+        <h3><span class="label label-primary">Create a New Password Tag</span></h3>
         
         <form method="post" action="/passwdtag">
             <div class="form-group">
                 <label>Password tag：</label>
-                <input id="tpasswdtag" type="text" class="form-control" name="tpasswdtag" placeholder="Add a tag: QQ mail" required autofocus>
+                <input id="tpasswdtag" type="text" class="form-control" name="tpasswdtag" placeholder="Tag: QQ mail" required autofocus>
             </div>
 
             <div class="form-group">
@@ -37,12 +37,12 @@
 
             <div class="form-group">
                 <label>Remark: </label>
-                <textarea id="tremark" type="content" cols="30" rows="10" class="form-control" name="tremark" placeholder="Remark: mark for this tag"></textarea>
+                <textarea id="tremark" type="content" cols="30" rows="10" class="form-control" name="tremark" placeholder="Remark: detail for this tag"></textarea>
             </div>
 
             <div class="container" style="width: 1000px;" align="left">
                 <span class="label label-warning">{{.AddTagStatus}}</span>
-                <button type="submit" class="btn btn-primary">Add Tag</button>
+                <button type="submit" class="btn btn-primary">Add</button>
             </div>
         </form>
 
@@ -112,8 +112,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="doCopy();">Copy</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancle</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="doCopy();">OK</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

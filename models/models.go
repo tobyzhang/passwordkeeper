@@ -318,3 +318,60 @@ func AddPasswdTag(uid, passwdtag, account, password, url, remark string) string 
 
 	return "ERR_OK"
 }
+
+// 修改一个密码标签
+func ModifyPasswdTag(tid, passwdtag, account, password, url, remark string) string {
+	id, err := strconv.ParseInt(tid, 10, 64)
+	if err != nil {
+		return "ERR_CONV"
+	}
+
+	o := orm.NewOrm()
+
+	tag := &Passwdtag{Id: id}
+	err = o.Read(tag)
+	if err == nil {
+		tag.Tag = passwdtag
+		tag.Account = account
+		tag.Passwd = password
+		tag.Url = url
+		tag.Remark = remark
+		tag.Modified = time.Now()
+		_, err = o.Update(tag)
+		if err != nil {
+			return "ERR_ORM"
+		}
+	} else {
+		return "ERR_ORM"
+	}
+
+	return "ERR_OK"
+}
+
+// 删除一个密码标签
+func DeletePasswdTagByTid(tid string) error {
+	id, err := strconv.ParseInt(tid, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	o := orm.NewOrm()
+	tag := &Passwdtag{Id: id}
+	_, err = o.Delete(tag)
+	return err
+}
+
+// 根据tid获取一个指定的password tag
+func GetPasswdTagByTid(tid string) (Passwdtag, error) {
+	var tag Passwdtag
+
+	id, err := strconv.ParseInt(tid, 10, 64)
+	if err != nil {
+		return tag, err
+	}
+
+	o := orm.NewOrm()
+	tag.Id = id
+	err = o.Read(&tag)
+	return tag, err
+}
