@@ -8,10 +8,20 @@ A remote password keeper, writting with golang.
 Just to learn [**beego**](http://beego.me) web framework.
 
 ----------
-Based on :
+**Based on:**
 	[**Beego**](http://github.com/astaxie/beego) / [**Sqlite3**](http://github.com/mattn/go-sqlite3) / [**Bootstrap3**](http://getbootstrap.com/) .
 
-Demo Site: [*here*](http://115.28.143.40:8080/)
+**Demo Site:** [*here*](http://115.28.143.40:8080/)
+
+**Snapshot**
+![](../snapshot/home.png)
+
+![](../snapshot/dashboard.png)
+
+![](../snapshot/random_pwd.png)
+
+![](../snapshot/view.png)
+
 
 
 ## INSTALL
