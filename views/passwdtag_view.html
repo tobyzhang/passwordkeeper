@@ -41,7 +41,7 @@
         </div>
 
         <div class="form-group">
-            <label>Url: </label>
+            <label>Url: {{str2html .GoUrl}} </label>
             <input id="turl" type="text" class="form-control" name="turl" value="{{.Passwdtag.Url}}" disabled="disabled">
         </div>
 
@@ -57,12 +57,6 @@
             var $id = function (id) {
                 return "string" == typeof id ? document.getElementById(id) : id;
             };
-
-            // function debugstr(msg) {
-            //     var p = document.createElement('p');
-            //     p.innerHTML = msg;
-            //     $id('d_debug').appendChild(p);
-            // }
 
             function init() {
                 ZeroClipboard.setMoviePath("/static/copy/ZeroClipboard.swf")
@@ -128,22 +122,6 @@
                 });
                 
                 clip_tpassword.glue('tpassword_btn');
-
-                // cliper = new ZeroClipboard.Client();
-                // cliper.setHandCursor(true);
-                // $('div.form-group').mouseover( function() {
-                //     cliper.setText(this.innerHTML);//设置复制的内容
-                //     if (cliper.div) {
-                //         cliper.receiveEvent('mouseout', null);
-                //         cliper.reposition(this);
-                //     } //如果已经存在flash，那么重新定位
-                //     else
-                //     {
-                //         cliper.glue(this);
-                //     } 
-                        
-                //     cliper.receiveEvent('mouseover', null);
-                // });
             }
         </script>
 

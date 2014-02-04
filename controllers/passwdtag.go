@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"regexp"
+
 	"github.com/astaxie/beego"
 	"github.com/tobyzxj/passwordkeeper/models"
 )
@@ -218,4 +220,12 @@ func (this *PasswdtagController) View() {
 
 	this.Data["Passwdtag"] = passwdtag
 	this.Data["Tid"] = tid
+	goURL := passwdtag.Url
+	m, _ := regexp.MatchString(`^[a-zA-Z]+://(\w+(-\w+)*)(\.(\w+(-\w+)*))*(\?\S*)?$`, goURL)
+	if !m {
+		// is not URL
+		this.Data["GoUrl"] = ""
+	} else {
+		this.Data["GoUrl"] = ">>><a href=\"" + goURL + "\" target=\"new\">Jump to the site"
+	}
 }
