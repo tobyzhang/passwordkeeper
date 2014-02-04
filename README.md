@@ -41,7 +41,7 @@ Just to learn [**beego**](http://beego.me) web framework.
 
 - **beego:** go get github.com/astaxie/beego
 - **bee:** go get github.com/beego/bee
-- **Sqlite3:** go get github.com/mattn/go-sqlite3
+- **sqlite3:** go get github.com/mattn/go-sqlite3
 - **com:** go get github.com/Unknwon/com
 
 
