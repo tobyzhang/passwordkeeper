@@ -14,13 +14,13 @@ Just to learn [**beego**](http://beego.me) web framework.
 **Demo Site:** [*here*](http://115.28.143.40:8080/)
 
 **Snapshot**
-![](../snapshot/home.png)
+![](./snapshot/home.png)
 
-![](../snapshot/dashboard.png)
+![](./snapshot/dashboard.png)
 
-![](../snapshot/random_pwd.png)
+![](./snapshot/random_pwd.png)
 
-![](../snapshot/view.png)
+![](./snapshot/view.png)
 
 
 
