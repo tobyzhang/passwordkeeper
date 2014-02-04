@@ -182,3 +182,40 @@ func (this *PasswdtagController) Modify() {
 	this.Data["Passwdtag"] = passwdtag
 	this.Data["Tid"] = tid
 }
+
+func (this *PasswdtagController) View() {
+	// 判断用户是否有权限进入此页面
+	if !checkLogin(this.Ctx) {
+		this.Redirect("/login", 302)
+		return
+	}
+
+	this.TplNames = "passwdtag_view.html"
+
+	// Update navbar
+	this.Data["IsLogin"] = checkLogin(this.Ctx)
+
+	// 用户操作界面
+	username, bLogin := getLoginUserName(this.Ctx)
+	if bLogin {
+		this.Data["UserName"] = username
+		if username == "root" || username == "admin" {
+			this.Data["UserUrl"] = "user"
+		} else {
+			this.Data["UserUrl"] = "passwdtag"
+		}
+	}
+
+	// view a password tag
+	// get a passwdtag by tid, which need to modify
+	tid := this.Input().Get("tid")
+	passwdtag, err := models.GetPasswdTagByTid(tid)
+	if err != nil {
+		beego.Error(err)
+		this.Redirect("/passwdtag", 302)
+		return
+	}
+
+	this.Data["Passwdtag"] = passwdtag
+	this.Data["Tid"] = tid
+}

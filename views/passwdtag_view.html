@@ -1,217 +1,149 @@
 {{template "header"}}
 
-<body>
+<body onLoad="init()">
+    <style type="text/css">
+        body { font-family:arial,sans-serif; font-size:9pt; }
+        
+        .my_clip_button { width:150px; text-align:center; border:1px solid black; background-color:#ccc; margin:10px; padding:10px; cursor:default; font-size:9pt; }
+        .my_clip_button.hover { background-color:#eee; }
+        .my_clip_button.active { background-color:#aaa; }
+    </style>
 
     {{template "navbar" .}}
 
     <div class="container" style="width: 1000px;">
-        <h3><span class="label label-primary">Add Password Tag</span></h3>
-        
-        <form method="post" action="/passwdtag">
-            <div class="form-group">
-                <label>Password tag：</label>
-                <input id="tpasswdtag" type="text" class="form-control" name="tpasswdtag" placeholder="Add a tag: QQ mail" required autofocus>
+        <h3><span class="label label-primary">View a Password Tag</span></h3>
+        <input id="tid" type="hidden" name="tid" value="{{.Tid}}">
+        <div class="form-group">
+            <label>Password tag：</label>
+            <input id="tpasswdtag" type="text" class="form-control" name="tpasswdtag" value="{{.Passwdtag.Tag}}" disabled="disabled">
+        </div>
+
+        <div class="form-group">
+            <label>Account：</label>
+            <div class="input-group">
+                <input id="taccount" type="text" class="form-control" name="taccount" value="{{.Passwdtag.Account}}" disabled="disabled" onChange="clip_taccount.setText(this.value);">
+                <span class="input-group-btn">
+                    <button id="taccount_btn" type="button" class="btn btn-primary" onmouseover="clip_taccount.reposition(this);">Copy</button>
+                </span>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Account：</label>
-                <input id="taccount" type="text" class="form-control" name="taccount" placeholder="Username: toby" required>
+        <div class="form-group">
+            <label>Password: </label>
+            <!--<p><a data-toggle="modal" href="#example" class="btn btn-primary btn-large">Generate a random password</a></p>-->               
+            <div class="input-group">
+                <input id="tpassword" type="text" class="form-control" name="tpassword" value="{{.Passwdtag.Passwd}}"  disabled="disabled" onChange="clip_tpassword.setText(this.value)">
+                <span class="input-group-btn">
+                    <button id="tpassword_btn" type="button" class="btn btn-primary" onmouseover="clip_tpassword.reposition(this);">Copy</button>
+                </span>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>Password: </label>
-                <!--<p><a data-toggle="modal" href="#example" class="btn btn-primary btn-large">Generate a random password</a></p>-->               
-                <div class="input-group">
-                    <input id="tpassword" type="text" class="form-control" name="tpassword" placeholder="Password: 1234567890" required>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#randomModal">Random</button>
-                        <button type="button" class="btn btn-primary" onClick="doClear();">Clear</button>
-                    </span>
-                </div>
-            </div>
+        <div class="form-group">
+            <label>Url: </label>
+            <input id="turl" type="text" class="form-control" name="turl" value="{{.Passwdtag.Url}}" disabled="disabled">
+        </div>
 
-            <div class="form-group">
-                <label>Url: </label>
-                <input id="turl" type="text" class="form-control" name="turl" placeholder="URL: www.example.com" required>
-            </div>
-
-            <div class="form-group">
-                <label>Remark: </label>
-                <textarea id="tremark" type="content" cols="30" rows="10" class="form-control" name="tremark" placeholder="Remark: mark for this tag"></textarea>
-            </div>
-
-            <div class="container" style="width: 1000px;" align="left">
-                <button type="submit" class="btn btn-primary">Add Tag</button>
-            </div>
-        </form>
-
-        <!-- Modal >Generate a random password  -->
-        <div class="modal fade" id="randomModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title" id="myModalLabel">Generate a random password</h3>
-                    </div>
-                    <div class="modal-body">
-                        <h4>1. Input the length of random password(1~32)</h4>
-                        <div class="input-group">
-                            <div class="col-lg-10">
-                                <div class="input-group">
-                                    <input id="passwdlen" type="text" name="passwdlen" class="form-control" value="8" disabled="disabled">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-primary" onclick="doUpDown(true)">
-                                            <span class="glyphicon glyphicon-arrow-up"></span>
-                                        </button>
-                                    </span>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-primary" onclick="doUpDown(false)">
-                                            <span class="glyphicon glyphicon-arrow-down"></span>
-                                        </button>
-                                    </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-10 -->
-
-                            <div class="col-lg-8">
-                                <input id="passwdlenbar" type="range" style="width:100%;" name="passwdlenbar" value="8" min="1" max="32" step="1" onChange="doGetValue();"/>
-                            </div>
-                        </div>
-
-                        <h4>2. Select the type of randmom password</h4>
-                        <div class="input-group">
-                            <div class="col-lg-12">
-                                <div class="input-group">
-                                    <label class="checkbox">
-                                        <input id="numeral" type="checkbox" checked="checked" name="numeral">The Arabic numeral <span class="label label-info">0123456789</span>
-                                    </label>
-                                    <label class="checkbox">
-                                        <input id="lowercase" type="checkbox" checked="checked" name="lowercase">Lower case <span class="label label-info">abcdefghijklmnopqrstuvwxyz<span>
-                                    </label>
-                                    <label class="checkbox">
-                                        <input id="uppercase" type="checkbox" checked="checked" name="uppercase">Upper case <span class="label label-info">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span>
-                                    </label>
-                                     <label class="checkbox">
-                                        <input id="specialcase" type="checkbox" name="specialcase">Special case <span class="label label-info">!#$%&()*+,-.:;=?@</span>
-                                    </label>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-12 -->
-                        </div>
-
-                        <h4>3. Click "Generate" button, show results</h4>
-                        <div class="input-group">
-                            <div class="col-lg-10">
-                                <div class="input-group">
-                                   <input id="passwordgen" type="text" class="form-control" name="passwordgen" value='' disabled="disabled"> 
-                                  <span class="input-group-btn">
-                                    <input type="button", value="Generate" class="btn btn-primary" onclick="randomAlphanumeric()"> 
-                                  </span>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-10 -->
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick="doCopy();">Copy</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <!-- Modal example by toby -->
-        <div id="example" class="modal-toby" style="display: none;">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal">×</a>
-                <h3>This is a Modal Heading</h3>
-            </div>
-            <div class="modal-body">
-                <h4>Text in a modal</h4>
-                <p>You can add some text here.</p>                
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-primary">Call to action</a>
-                <a href="#" class="btn" data-dismiss="modal">Close</a>
-            </div> 
-        </div> <!-- /.modal -->
+        <div class="form-group">
+            <label>Remark: </label>
+            <textarea id="tremark" type="content" cols="30" rows="10" class="form-control" name="tremark" value="{{.Passwdtag.Remark}}" disabled="disabled"></textarea>
+        </div>
 
         <script type="text/javascript">
-            function randomAlphanumeric() {
-                var NUMERAL = "0123456789";
-                var LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
-                var UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                var SPECIALCASE = "!#$%&()*+,-.:;=?@"; 
+            var clip_taccount = null
+            var clip_tpassword = null;
+            
+            var $id = function (id) {
+                return "string" == typeof id ? document.getElementById(id) : id;
+            };
 
-                var isNumeral = document.getElementById("numeral");
-                var isLowercase = document.getElementById("lowercase");
-                var isUppercase = document.getElementById("uppercase");
-                var isSpecialcase = document.getElementById("specialcase");
+            // function debugstr(msg) {
+            //     var p = document.createElement('p');
+            //     p.innerHTML = msg;
+            //     $id('d_debug').appendChild(p);
+            // }
 
-                var dstElem = document.getElementById("passwordgen");
-                var length = document.getElementById("passwdlen").value;
+            function init() {
+                ZeroClipboard.setMoviePath("/static/copy/ZeroClipboard.swf")
 
-                chars = "";
-                if(isNumeral.checked == true) {
-                    chars = NUMERAL;
-                }
+                // clip_taccount
+                clip_taccount = new ZeroClipboard.Client();
+                clip_taccount.setHandCursor(true);
+                
+                clip_taccount.addEventListener('load', function (client) {
+                    //debugstr("Flash movie loaded and ready.");
+                });
+                
+                clip_taccount.addEventListener('mouseOver', function (client) {
+                    // update the text on mouse over
+                    clip_taccount.setText($id("taccount").value);
 
-                if(isLowercase.checked == true) {
-                    chars += LOWERCASE;
-                }
+                });
+                
+                clip_taccount.addEventListener('complete', function (client, text) {
+                    //debugstr("Copied text to clipboard: " + text );
+                    alert("Copy -->" + text + "<-- to clipboard succeed.")
+                });
+                
+                clip_taccount.glue('taccount_btn');
 
-                if(isUppercase.checked == true) {
-                    chars += UPPERCASE;
-                }
+                // clip_taccount
+                clip_taccount = new ZeroClipboard.Client();
+                clip_taccount.setHandCursor(true);
+                
+                clip_taccount.addEventListener('load', function (client) {
+                    //debugstr("Flash movie loaded and ready.");
+                });
+                
+                clip_taccount.addEventListener('mouseOver', function (client) {
+                    // update the text on mouse over
+                    clip_taccount.setText($id("taccount").value);
 
-                if(isSpecialcase.checked == true) {
-                    chars += SPECIALCASE;
-                }
+                });
+                
+                clip_taccount.addEventListener('complete', function (client, text) {
+                    //debugstr("Copied text to clipboard: " + text );
+                    alert("Copy -->" + text + "<-- to clipboard succeed.")
+                });
+                
+                clip_taccount.glue('taccount_btn');
 
-                var randomChars = ""; 
-                for(x=0; x<length; x++) { 
-                    var i = Math.floor(Math.random() * chars.length); 
-                    randomChars += chars.charAt(i); 
-                } 
+                // clip_tpassword
+                clip_tpassword = new ZeroClipboard.Client();
+                clip_tpassword.setHandCursor(true);
+                
+                clip_tpassword.addEventListener('load', function (client) {
+                    //debugstr("Flash movie loaded and ready.");
+                });
+                
+                clip_tpassword.addEventListener('mouseOver', function (client) {
+                    // update the text on mouse over
+                    clip_tpassword.setText($id("tpassword").value);
+                });
+                
+                clip_tpassword.addEventListener('complete', function (client, text) {
+                    //debugstr("Copied text to clipboard: " + text );
+                    alert("Copy -->" + text + "<-- to clipboard succeed.")
+                });
+                
+                clip_tpassword.glue('tpassword_btn');
 
-                dstElem.value = randomChars; 
-            }
-
-            function doCopy() {
-                var passwordgen = document.getElementById("passwordgen");
-                var tpassword = document.getElementById("tpassword");
-
-                if(passwordgen.value.length != 0) {
-                    tpassword.value = passwordgen.value;
-                } else {
-                    alert("Random password is empty, please Click \"Random\" button first!");
-                }
-            }
-
-            function doClear() {
-                var tpassword = document.getElementById("tpassword");
-                tpassword.value = "";
-            }       
-
-            function doGetValue() {
-                var passwdlenbar = document.getElementById("passwdlenbar");
-                var passwdlen = document.getElementById("passwdlen");
-                passwdlen.value = passwdlenbar.value;
-            }  
-
-            function doUpDown(isup) {
-                var passwdlenbar = document.getElementById("passwdlenbar");
-                var passwdlen = document.getElementById("passwdlen");
-
-                if(isup == false) {
-                    if(passwdlen.value > 0) {
-                        passwdlen.value--;
-                    }
-                    passwdlenbar.value = passwdlen.value;
-                } else {
-                    if(passwdlen.value < 32) {
-                        passwdlen.value++;
-                    }
-                    passwdlenbar.value = passwdlen.value;
-                }
+                // cliper = new ZeroClipboard.Client();
+                // cliper.setHandCursor(true);
+                // $('div.form-group').mouseover( function() {
+                //     cliper.setText(this.innerHTML);//设置复制的内容
+                //     if (cliper.div) {
+                //         cliper.receiveEvent('mouseout', null);
+                //         cliper.reposition(this);
+                //     } //如果已经存在flash，那么重新定位
+                //     else
+                //     {
+                //         cliper.glue(this);
+                //     } 
+                        
+                //     cliper.receiveEvent('mouseover', null);
+                // });
             }
         </script>
 
@@ -225,5 +157,7 @@
     <!--<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>-->
     <script src="/static/js/jquery-2.0.2.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/copy/ZeroClipboard.js"></script>
+    </script>
 </body>
 </html>
